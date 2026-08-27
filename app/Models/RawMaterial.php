@@ -16,12 +16,10 @@ class RawMaterial extends Model
         'unit_id',
         'minimum_stock',
         'description',
-        'is_active',
     ];
 
     protected $casts = [
         'cost_price' => 'decimal:2',
-        'is_active' => 'boolean',
     ];
 
     public function unit(): BelongsTo

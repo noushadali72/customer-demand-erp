@@ -12,12 +12,9 @@ class ManufacturingFormula extends Model
         'product_id',
         'name',
         'description',
-        'is_active',
+     
     ];
 
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
 
     public function product(): BelongsTo
     {

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PurchaseRequest\StorePurchaseRequest;
+use App\Http\Requests\PurchaseRequest\UpdatePurchaseRequest;
 use App\Models\PurchaseRequest;
 use App\Models\RawMaterial;
 use App\Models\Unit;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 
 class PurchaseRequestController extends Controller
 {
@@ -18,7 +18,7 @@ class PurchaseRequestController extends Controller
     {
         $purchaseRequests = PurchaseRequest::with('items')
             ->latest()
-            ->paginate(15);
+            ->paginate(10);
 
         return view(
             'purchase_requests.index',
@@ -32,8 +32,7 @@ class PurchaseRequestController extends Controller
      */
     public function create()
     {
-        $rawMaterials = RawMaterial::where('is_active', true)
-            ->orderBy('name')
+        $rawMaterials = RawMaterial::orderBy('name')
             ->get();
 
         $units = Unit::orderBy('name')->get();
@@ -48,64 +47,17 @@ class PurchaseRequestController extends Controller
     /**
      * Store purchase request.
      */
-    public function store(Request $request)
+    public function store(StorePurchaseRequest $request)
     {
-        $validated = $request->validate([
-            'request_number' => [
-                'required',
-                'integer',
-                'unique:purchase_requests,request_number',
-            ],
-
-            'status' => [
-                'required',
-                Rule::in([
-                    'complete',
-                    'pending',
-                    'active',
-                ]),
-            ],
-
-            'notes' => [
-                'nullable',
-                'string',
-            ],
-
-            'items' => [
-                'required',
-                'array',
-                'min:1',
-            ],
-
-            'items.*.raw_material_id' => [
-                'required',
-                'exists:raw_materials,id',
-            ],
-
-            'items.*.qty' => [
-                'required',
-                'integer',
-                'min:1',
-            ],
-
-            'items.*.unit_id' => [
-                'required',
-                'exists:units,id',
-            ],
-        ]);
-
-
+        $validated = $request->validated();
         DB::transaction(function () use ($validated) {
-
             $purchaseRequest = PurchaseRequest::create([
                 'request_number' => $validated['request_number'],
                 'status' => $validated['status'],
                 'notes' => $validated['notes'] ?? null,
             ]);
 
-
             foreach ($validated['items'] as $item) {
-
                 $purchaseRequest->items()->create([
                     'raw_material_id' => $item['raw_material_id'],
                     'qty' => $item['qty'],
@@ -113,8 +65,6 @@ class PurchaseRequestController extends Controller
                 ]);
             }
         });
-
-
         return redirect()
             ->route('purchase-requests.index')
             ->with(
@@ -147,13 +97,8 @@ class PurchaseRequestController extends Controller
     public function edit(PurchaseRequest $purchaseRequest)
     {
         $purchaseRequest->load('items');
-
-        $rawMaterials = RawMaterial::where('is_active', true)
-            ->orderBy('name')
-            ->get();
-
+        $rawMaterials = RawMaterial::orderBy('name')->get();
         $units = Unit::orderBy('name')->get();
-
         return view(
             'purchase_requests.edit',
             compact(
@@ -168,62 +113,9 @@ class PurchaseRequestController extends Controller
     /**
      * Update purchase request.
      */
-    public function update(
-        Request $request,
-        PurchaseRequest $purchaseRequest
-    ) {
-        $validated = $request->validate([
-            'request_number' => [
-                'required',
-                'integer',
-                Rule::unique(
-                    'purchase_requests',
-                    'request_number'
-                )->ignore($purchaseRequest->id),
-            ],
-
-            'status' => [
-                'required',
-                Rule::in([
-                    'complete',
-                    'pending',
-                    'active',
-                ]),
-            ],
-
-            'notes' => [
-                'nullable',
-                'string',
-            ],
-
-            'items' => [
-                'required',
-                'array',
-                'min:1',
-            ],
-
-            'items.*.raw_material_id' => [
-                'required',
-                'exists:raw_materials,id',
-            ],
-
-            'items.*.qty' => [
-                'required',
-                'integer',
-                'min:1',
-            ],
-
-            'items.*.unit_id' => [
-                'required',
-                'exists:units,id',
-            ],
-        ]);
-
-
-        DB::transaction(function () use (
-            $validated,
-            $purchaseRequest
-        ) {
+    public function update(UpdatePurchaseRequest $request, PurchaseRequest $purchaseRequest) {
+        $validated = $request->validated();
+        DB::transaction(function () use ($validated, $purchaseRequest) {
 
             $purchaseRequest->update([
                 'request_number' => $validated['request_number'],
@@ -231,12 +123,9 @@ class PurchaseRequestController extends Controller
                 'notes' => $validated['notes'] ?? null,
             ]);
 
-
             $purchaseRequest->items()->delete();
 
-
             foreach ($validated['items'] as $item) {
-
                 $purchaseRequest->items()->create([
                     'raw_material_id' => $item['raw_material_id'],
                     'qty' => $item['qty'],
@@ -244,13 +133,8 @@ class PurchaseRequestController extends Controller
                 ]);
             }
         });
-
-
         return redirect()
-            ->route(
-                'purchase-requests.show',
-                $purchaseRequest
-            )
+            ->route('purchase-requests.index', $purchaseRequest)
             ->with(
                 'success',
                 'Purchase request updated successfully.'
@@ -266,7 +150,6 @@ class PurchaseRequestController extends Controller
         try {
 
             $purchaseRequest->delete();
-
             return redirect()
                 ->route('purchase-requests.index')
                 ->with(

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->foreignId('unit_id')->constrained('units')->noActionOnDelete();
             $table->integer('minimum_stock')->default(5);
             $table->text('description')->nullable();
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
             
         });

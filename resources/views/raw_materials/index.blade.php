@@ -44,7 +44,7 @@
                         <th class="px-6 py-4">Cost Price</th>
                         <th class="px-6 py-4">Stock</th>
                         <th class="px-6 py-4">Min. Stock</th>
-                        <th class="px-6 py-4">Status</th>
+                       
                         <th class="px-6 py-4 text-right">Actions</th>
                     </tr>
                 </thead>
@@ -93,24 +93,13 @@
                                 {{ $rawMaterial->minimum_stock }}
                             </td>
 
-                            <td class="px-6 py-4">
-                                @if ($rawMaterial->is_active)
-                                    <span class="rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
-                                        Active
-                                    </span>
-                                @else
-                                    <span class="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">
-                                        Inactive
-                                    </span>
-                                @endif
-                            </td>
 
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-end gap-2">
 
                                     <a
                                         href="{{ route('raw-materials.edit', $rawMaterial) }}"
-                                        class="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50"
+                                        class="rounded-lg border border-blue-300 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-blue-500 hover:text-white"
                                     >
                                         Edit
                                     </a>
@@ -125,7 +114,7 @@
 
                                         <button
                                             type="submit"
-                                            class="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50"
+                                            class="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-500 hover:text-white cursor-pointer"
                                         >
                                             Delete
                                         </button>

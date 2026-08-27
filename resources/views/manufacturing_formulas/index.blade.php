@@ -118,7 +118,7 @@
 
                                     <a
                                         href="{{ route('manufacturing-formulas.edit', $formula) }}"
-                                        class="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50"
+                                        class="rounded-lg border border-blue-300 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-blue-500 hover:text-white"
                                     >
                                         Edit
                                     </a>
@@ -133,7 +133,7 @@
 
                                         <button
                                             type="submit"
-                                            class="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50"
+                                            class="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-500 hover:text-white cursor-pointer"
                                         >
                                             Delete
                                         </button>

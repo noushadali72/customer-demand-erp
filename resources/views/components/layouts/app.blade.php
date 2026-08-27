@@ -17,75 +17,110 @@
         {{-- Sidebar --}}
         <aside class="w-64 shrink-0 bg-gray-900 text-white">
             <div class="flex h-16 items-center border-b border-gray-800 px-6">
-                <span class="text-lg font-semibold">
-                    {{ config('app.name') }}
-                </span>
+                <img src="{{ asset('storage/'.'logo.png') }}" alt="">
             </div>
 
             <nav class="space-y-1 px-3 py-4">
 
+                {{-- Dashboard --}}
                 <a href="{{ route('admin.dashboard') }}"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition hover:bg-gray-800 hover:text-white">
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->routeIs('admin.dashboard')
+                        ? 'bg-gray-800 text-white'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="bx bx-grid-alt text-xl"></i>
                     <span>Dashboard</span>
                 </a>
 
+                {{-- Products --}}
                 <a href="{{ route('products.index') }}"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition hover:bg-gray-800 hover:text-white">
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->routeIs('products.*')
+                        ? 'bg-gray-800 text-white'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="bx bx-package text-xl"></i>
                     <span>Products</span>
                 </a>
 
+                {{-- Raw Materials --}}
                 <a href="{{ route('raw-materials.index') }}"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition hover:bg-gray-800 hover:text-white">
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->routeIs('raw-materials.*')
+                        ? 'bg-gray-800 text-white'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="bx bx-cube text-xl"></i>
                     <span>Raw Materials</span>
                 </a>
 
+                {{-- Units --}}
                 <a href="{{ route('units.index') }}"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition hover:bg-gray-800 hover:text-white">
-                    {{-- <i class="bx bx-cube text-xl"></i> --}}
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->routeIs('units.*')
+                        ? 'bg-gray-800 text-white'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="bx bx-ruler text-xl"></i>
                     <span>Units</span>
                 </a>
 
+                {{-- Manufacturing Formulas --}}
                 <a href="{{ route('manufacturing-formulas.index') }}"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition hover:bg-gray-800 hover:text-white">
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->routeIs('manufacturing-formulas.*')
+                        ? 'bg-gray-800 text-white'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="bx bx-receipt text-xl"></i>
                     <span>Manufacturing Formulas</span>
                 </a>
 
-                <a href="#"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition hover:bg-gray-800 hover:text-white">
+                {{-- Vendors --}}
+                <a href="{{ route('vendors.index') }}"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->routeIs('vendors.*')
+                        ? 'bg-gray-800 text-white'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="bx bx-store text-xl"></i>
                     <span>Vendors</span>
                 </a>
 
+                {{-- Purchase Requests --}}
                 <a href="{{ route('purchase-requests.index') }}"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition hover:bg-gray-800 hover:text-white">
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->routeIs('purchase-requests.*')
+                        ? 'bg-gray-800 text-white'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="bx bx-file text-xl"></i>
                     <span>Purchase Requests</span>
                 </a>
 
-                <a href="#"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition hover:bg-gray-800 hover:text-white">
+                {{-- Quotations --}}
+                <a href="{{ route('quotations.index') }}"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->routeIs('quotations.*')
+                        ? 'bg-gray-800 text-white'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="bx bx-file-find text-xl"></i>
                     <span>Quotations</span>
                 </a>
 
-                <a href="#"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition hover:bg-gray-800 hover:text-white">
+                {{-- Purchase Orders --}}
+                {{-- <a href="#"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->routeIs('purchase-orders.*')
+                        ? 'bg-gray-800 text-white'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="bx bx-cart text-xl"></i>
                     <span>Purchase Orders</span>
-                </a>
+                </a> --}}
 
-                <a href="{{ route('invoices.index') }}"
-                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition hover:bg-gray-800 hover:text-white">
+                {{-- Invoices --}}
+                {{-- <a href="{{ route('invoices.index') }}"
+                    class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                    {{ request()->routeIs('invoices.*')
+                        ? 'bg-gray-800 text-white'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="bx bx-receipt text-xl"></i>
                     <span>Invoices</span>
-                </a>
-
-              
+                </a> --}}
 
             </nav>
         </aside>

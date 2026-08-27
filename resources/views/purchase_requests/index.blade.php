@@ -141,7 +141,7 @@
 
                                     <a
                                         href="{{ route('purchase-requests.show', $purchaseRequest) }}"
-                                        class="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100"
+                                        class="rounded-lg px-3 py-1.5 text-xs border border-gray-300 font-medium text-gray-600 hover:bg-gray-400 cursor-pointer hover:text-white"
                                     >
                                         View
                                     </a>
@@ -149,7 +149,7 @@
 
                                     <a
                                         href="{{ route('purchase-requests.edit', $purchaseRequest) }}"
-                                        class="rounded-lg px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50"
+                                        class="rounded-lg border border-blue-300 px-3 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-500 hover:text-white"
                                     >
                                         Edit
                                     </a>
@@ -166,7 +166,7 @@
 
                                         <button
                                             type="submit"
-                                            class="rounded-lg px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+                                            class="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-500 hover:text-white cursor-pointer"
                                         >
                                             Delete
                                         </button>

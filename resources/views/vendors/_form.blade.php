@@ -2,19 +2,21 @@
 
     {{-- Name --}}
     <div>
+
         <label
             for="name"
             class="mb-1 block text-sm font-medium text-gray-700"
         >
-            Raw Material Name
+            Name
         </label>
 
         <input
             type="text"
             id="name"
             name="name"
-            value="{{ old('name', $rawMaterial->name ?? '') }}"
+            value="{{ old('name', $vendor->name ?? '') }}"
             required
+            autofocus
             class="w-full rounded-lg border-gray-300 px-4 py-2.5 shadow-sm focus:border-gray-500 focus:ring-gray-500"
         >
 
@@ -23,168 +25,182 @@
                 {{ $message }}
             </span>
         @enderror
+
     </div>
 
-    {{-- SKU --}}
+
+    {{-- Company Name --}}
     <div>
+
         <label
-            for="sku"
+            for="company_name"
             class="mb-1 block text-sm font-medium text-gray-700"
         >
-            SKU
+            Company Name
         </label>
 
         <input
             type="text"
-            id="sku"
-            name="sku"
-            value="{{ old('sku', $rawMaterial->sku ?? '') }}"
+            id="company_name"
+            name="company_name"
+            value="{{ old('company_name', $vendor->company_name ?? '') }}"
             class="w-full rounded-lg border-gray-300 px-4 py-2.5 shadow-sm focus:border-gray-500 focus:ring-gray-500"
         >
 
-        @error('sku')
+        @error('company_name')
             <span class="mt-1 block text-sm text-red-600">
                 {{ $message }}
             </span>
         @enderror
+
     </div>
 
-    {{-- Unit --}}
+
+    {{-- Contact Person --}}
     <div>
+
         <label
-            for="unit_id"
+            for="contact_person"
             class="mb-1 block text-sm font-medium text-gray-700"
         >
-            Unit
+            Contact Person
+        </label>
+
+        <input
+            type="text"
+            id="contact_person"
+            name="contact_person"
+            value="{{ old('contact_person', $vendor->contact_person ?? '') }}"
+            class="w-full rounded-lg border-gray-300 px-4 py-2.5 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+        >
+
+        @error('contact_person')
+            <span class="mt-1 block text-sm text-red-600">
+                {{ $message }}
+            </span>
+        @enderror
+
+    </div>
+
+
+    {{-- Email --}}
+    <div>
+
+        <label
+            for="email"
+            class="mb-1 block text-sm font-medium text-gray-700"
+        >
+            Email
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            name="email"
+            value="{{ old('email', $vendor->email ?? '') }}"
+            class="w-full rounded-lg border-gray-300 px-4 py-2.5 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+        >
+
+        @error('email')
+            <span class="mt-1 block text-sm text-red-600">
+                {{ $message }}
+            </span>
+        @enderror
+
+    </div>
+
+
+    {{-- Phone --}}
+    <div>
+
+        <label
+            for="phone"
+            class="mb-1 block text-sm font-medium text-gray-700"
+        >
+            Phone
+        </label>
+
+        <input
+            type="text"
+            id="phone"
+            name="phone"
+            value="{{ old('phone', $vendor->phone ?? '') }}"
+            class="w-full rounded-lg border-gray-300 px-4 py-2.5 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+        >
+
+        @error('phone')
+            <span class="mt-1 block text-sm text-red-600">
+                {{ $message }}
+            </span>
+        @enderror
+
+    </div>
+
+
+    {{-- Active --}}
+    <div>
+
+        <label
+            for="is_active"
+            class="mb-1 block text-sm font-medium text-gray-700"
+        >
+            Status
         </label>
 
         <select
-            id="unit_id"
-            name="unit_id"
-            required
-            class="w-full rounded-lg border-gray-300 px-4 py-2.5 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+            id="is_active"
+            name="is_active"
+            class="w-full rounded-lg border-gray-300 bg-white px-4 py-2.5 shadow-sm focus:border-gray-500 focus:ring-gray-500"
         >
-            <option value="">Select Unit</option>
 
-            @foreach ($units as $unit)
-                <option
-                    value="{{ $unit->id }}"
-                    @selected(old('unit_id', $rawMaterial->unit_id ?? '') == $unit->id)
-                >
-                    {{ $unit->name }}
-                </option>
-            @endforeach
+            <option
+                value="1"
+                @selected(old('is_active', $vendor->is_active ?? true))
+            >
+                Active
+            </option>
+
+            <option
+                value="0"
+                @selected(old('is_active', $vendor->is_active ?? true) == 0)
+            >
+                Inactive
+            </option>
+
         </select>
 
-        @error('unit_id')
+        @error('is_active')
             <span class="mt-1 block text-sm text-red-600">
                 {{ $message }}
             </span>
         @enderror
+
     </div>
 
-    {{-- Cost Price --}}
-    <div>
-        <label
-            for="cost_price"
-            class="mb-1 block text-sm font-medium text-gray-700"
-        >
-            Cost Price
-        </label>
 
-        <input
-            type="number"
-            step="0.01"
-            min="0"
-            id="cost_price"
-            name="cost_price"
-            value="{{ old('cost_price', $rawMaterial->cost_price ?? '') }}"
-            required
-            class="w-full rounded-lg border-gray-300 px-4 py-2.5 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-        >
-
-        @error('cost_price')
-            <span class="mt-1 block text-sm text-red-600">
-                {{ $message }}
-            </span>
-        @enderror
-    </div>
-
-    {{-- Stock --}}
-    <div>
-        <label
-            for="stock"
-            class="mb-1 block text-sm font-medium text-gray-700"
-        >
-            Stock
-        </label>
-
-        <input
-            type="number"
-            min="0"
-            id="stock"
-            name="stock"
-            value="{{ old('stock', $rawMaterial->stock ?? 0) }}"
-            required
-            class="w-full rounded-lg border-gray-300 px-4 py-2.5 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-        >
-
-        @error('stock')
-            <span class="mt-1 block text-sm text-red-600">
-                {{ $message }}
-            </span>
-        @enderror
-    </div>
-
-    {{-- Minimum Stock --}}
-    <div>
-        <label
-            for="minimum_stock"
-            class="mb-1 block text-sm font-medium text-gray-700"
-        >
-            Minimum Stock
-        </label>
-
-        <input
-            type="number"
-            min="0"
-            id="minimum_stock"
-            name="minimum_stock"
-            value="{{ old('minimum_stock', $rawMaterial->minimum_stock ?? 5) }}"
-            required
-            class="w-full rounded-lg border-gray-300 px-4 py-2.5 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-        >
-
-        @error('minimum_stock')
-            <span class="mt-1 block text-sm text-red-600">
-                {{ $message }}
-            </span>
-        @enderror
-    </div>
-
-    {{-- Description --}}
+    {{-- Address --}}
     <div class="md:col-span-2">
+
         <label
-            for="description"
+            for="address"
             class="mb-1 block text-sm font-medium text-gray-700"
         >
-            Description
+            Address
         </label>
 
         <textarea
-            id="description"
-            name="description"
+            id="address"
+            name="address"
             rows="4"
             class="w-full rounded-lg border-gray-300 px-4 py-2.5 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-        >{{ old('description', $rawMaterial->description ?? '') }}</textarea>
+        >{{ old('address', $vendor->address ?? '') }}</textarea>
 
-        @error('description')
+        @error('address')
             <span class="mt-1 block text-sm text-red-600">
                 {{ $message }}
             </span>
         @enderror
+
     </div>
-
-
 
 </div>

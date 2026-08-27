@@ -194,25 +194,6 @@
         @enderror
     </div>
 
-    {{-- Active --}}
-    <div class="md:col-span-2">
-        <label class="inline-flex cursor-pointer items-center gap-3">
-            <input
-                type="checkbox"
-                name="is_active"
-                value="1"
-                class="rounded border-gray-300 text-gray-900 focus:ring-gray-500"
-                @checked(old('is_active', $product->is_active ?? true))
-            >
-
-            <span class="text-sm font-medium text-gray-700">
-                Active Product
-            </span>
-        </label>
-
-        @error('is_active')
-            <span class="mt-1 block text-sm text-red-600">{{ $message }}</span>
-        @enderror
-    </div>
+  
 
 </div>

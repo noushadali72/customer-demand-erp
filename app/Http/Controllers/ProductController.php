@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\Unit;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Exception;
 
 class ProductController extends Controller
 {
@@ -14,35 +15,19 @@ class ProductController extends Controller
         $products = Product::with('unit')
             ->latest()
             ->paginate(15);
-
         return view('products.index', compact('products'));
     }
 
     public function create()
     {
         $units = Unit::orderBy('name')->get();
-
         return view('products.create', compact('units'));
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'sku' => ['nullable', 'string', 'max:255', 'unique:products,sku'],
-            'unit_id' => ['required', 'exists:units,id'],
-            'cost_price' => ['nullable', 'numeric', 'min:0'],
-            'sale_price' => ['nullable', 'numeric', 'min:0'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'minimum_stock' => ['required', 'integer', 'min:0'],
-            'description' => ['nullable', 'string'],
-            'is_active' => ['nullable', 'boolean'],
-        ]);
-
-        $validated['is_active'] = $request->boolean('is_active');
-
+        $validated = $request->validated();
         Product::create($validated);
-
         return redirect()
             ->route('products.index')
             ->with('success', 'Product created successfully.');
@@ -50,7 +35,6 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        
         return response()->json([
             'id' => $product->id,
             'name' => $product->name,
@@ -67,33 +51,13 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $units = Unit::orderBy('name')->get();
-
         return view('products.edit', compact('product', 'units'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'sku' => [
-                'nullable',
-                'string',
-                'max:255',
-                Rule::unique('products', 'sku')->ignore($product->id),
-            ],
-            'unit_id' => ['required', 'exists:units,id'],
-            'cost_price' => ['nullable', 'numeric', 'min:0'],
-            'sale_price' => ['nullable', 'numeric', 'min:0'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'minimum_stock' => ['required', 'integer', 'min:0'],
-            'description' => ['nullable', 'string'],
-            'is_active' => ['nullable', 'boolean'],
-        ]);
-
-        $validated['is_active'] = $request->boolean('is_active');
-
+        $validated = $request->validated();
         $product->update($validated);
-
         return redirect()
             ->route('products.index')
             ->with('success', 'Product updated successfully.');
@@ -101,8 +65,13 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        $product->delete();
-
+        try{
+            $product->delete();
+        }catch(Exception $e){
+            return redirect()
+            ->route('products.index')
+            ->with('error', 'Unable to Delete Product.');
+        }
         return redirect()
             ->route('products.index')
             ->with('success', 'Product deleted successfully.');

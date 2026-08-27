@@ -1,27 +1,20 @@
 @php
 
     $oldItems = old('items');
-
     if ($oldItems) {
-
         $formItems = $oldItems;
-
     } elseif (isset($purchaseRequest)) {
-
         $formItems = $purchaseRequest->items->map(
             function ($item) {
-
                 return [
                     'raw_material_id' => $item->raw_material_id,
                     'qty' => $item->qty,
                     'unit_id' => $item->unit_id,
                 ];
-
             }
         )->toArray();
 
     } else {
-
         $formItems = [
             [
                 'raw_material_id' => '',
@@ -32,12 +25,7 @@
     }
 
 @endphp
-
-
-{{-- ========================================================= --}}
 {{-- Purchase Request Information --}}
-{{-- ========================================================= --}}
-
 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 
     {{-- Request Number --}}
@@ -145,10 +133,7 @@
 </div>
 
 
-{{-- ========================================================= --}}
 {{-- Purchase Request Items --}}
-{{-- ========================================================= --}}
-
 <div class="mt-8 border-t pt-6">
 
     <div class="mb-4 flex items-center justify-between">
@@ -318,12 +303,9 @@
 </div>
 
 
-{{-- ========================================================= --}}
-{{-- Dynamic Item Template --}}
-{{-- ========================================================= --}}
 
+{{-- Item Card --}}
 <template id="item-template">
-
     <div class="purchase-item rounded-lg border border-gray-200 bg-gray-50 p-4">
 
         <div class="grid grid-cols-1 gap-4 md:grid-cols-12">

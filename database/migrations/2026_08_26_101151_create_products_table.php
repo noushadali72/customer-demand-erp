@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->integer('minimum_stock')->default(5);
             $table->text('description')->nullable();
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

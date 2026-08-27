@@ -6,8 +6,10 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ManufacturingFormulaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseRequestController;
+use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,8 +23,7 @@ Route::middleware(['guest'])->prefix('auth')->group(function () {
 });
 
 Route::middleware(['auth','role:admin'])->group(function(){
-        Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('admin.dashboard');
-
+        Route::get('/',[DashboardController::class,'dashboard'])->name('admin.dashboard');
         Route::resource('products', ProductController::class);
         Route::resource('raw-materials', RawMaterialController::class)->except(['show']);
         Route::resource('manufacturing-formulas',ManufacturingFormulaController::class)->except(['show']);
@@ -30,8 +31,12 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::resource('units', UnitController::class);
 
         Route::get('/purchase-requests/raw-material/{rawMaterial}',[PurchaseRequestController::class, 'rawMaterial'])->name('purchase-requests.raw-material');
-
         Route::resource('purchase-requests',PurchaseRequestController::class);
+
+        Route::resource('vendors', VendorController::class);
+
+        Route::resource('quotations',QuotationController::class)->except('create');
+        Route::get('quotations/create/{purchaseRequest}',[QuotationController::class,'create'])->name('quotations.create');
 
         Route::post('logout',[AuthController::class,'logout'])->name('logout');
 });

@@ -13,10 +13,9 @@ return new class extends Migration
     {
     Schema::create('manufacturing_formulas', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('product_id')->constrained()->restrictOnDelete();
+        $table->foreignId('product_id')->unique()->constrained()->restrictOnDelete();
         $table->string('name');
         $table->text('description')->nullable();
-        $table->boolean('is_active')->default(true);
         $table->timestamps();
     });
     }
