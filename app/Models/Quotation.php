@@ -38,4 +38,8 @@ class Quotation extends Model
     {
         return $this->hasMany(QuotationItem::class);
     }
+    public function purchaseOrder()
+    {
+        return $this->hasOne(PurchaseOrder::class);
+    }
 }

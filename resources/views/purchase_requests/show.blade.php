@@ -81,24 +81,25 @@
 
                 <div class="mt-2">
 
-                    @if($purchaseRequest->status === 'complete')
+                    @if($purchaseRequest->status === 'completed')
 
                         <span class="rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
-                            Complete
+                            Completed
                         </span>
 
-                    @elseif($purchaseRequest->status === 'pending')
+                    @elseif($purchaseRequest->status === 'active')
 
-                        <span class="rounded-full bg-yellow-100 px-2.5 py-1 text-xs font-medium text-yellow-700">
-                            Pending
-                        </span>
-
-                    @else
-
-                        <span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700">
+                           <span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700">
                             Active
                         </span>
 
+
+                    @else
+                        
+                        <span class="rounded-full bg-yellow-100 px-2.5 py-1 text-xs font-medium text-yellow-700">
+                            Pending
+                        </span>
+                 
                     @endif
 
                 </div>
@@ -148,7 +149,7 @@
             <h3 class="font-semibold text-gray-900">
                 Raw Materials
             </h3>
-            
+            @if($purchaseRequest->status=='active')
             <div class="flex gap-2">
 
                 <a href="{{ route('quotations.create', $purchaseRequest) }}" class="flex gap-2  items-center rounded-lg bg-blue-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-gray-800">
@@ -162,7 +163,7 @@
                 </span>
                 </a>
             </div>
-
+            @endif
         </div>
 
 

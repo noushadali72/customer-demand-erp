@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Quotation\StoreQuotationRequest;
 use App\Http\Requests\Quotation\UpdateQuotationRequest;
+use App\Models\PurchaseOrder;
 use App\Models\Quotation;
 use App\Models\QuotationItem;
 use App\Models\PurchaseRequest;
@@ -123,30 +124,30 @@ class QuotationController extends Controller
     /**
      * Edit quotation.
      */
-public function edit(Quotation $quotation)
-{
-    $quotation->load([
-        'purchaseRequest.items.rawMaterial',
-        'purchaseRequest.items.unit',
-        'items',
-    ]);
+    public function edit(Quotation $quotation)
+    {
+        $quotation->load([
+            'purchaseRequest.items.rawMaterial',
+            'purchaseRequest.items.unit',
+            'items',
+        ]);
 
-    $purchaseRequest = $quotation->purchaseRequest;
+        $purchaseRequest = $quotation->purchaseRequest;
 
-    $vendors = Vendor::where('is_active', true)
-        ->orderBy('name')
-        ->get();
+        $vendors = Vendor::where('is_active', true)
+            ->orderBy('name')
+            ->get();
 
-    // Map existing quotation items by raw material
-    $quotationItems = $quotation->items->keyBy('raw_material_id');
+        // Map existing quotation items by raw material
+        $quotationItems = $quotation->items->keyBy('raw_material_id');
 
-    return view('quotations.edit', compact(
-        'quotation',
-        'purchaseRequest',
-        'quotationItems',
-        'vendors'
-    ));
-}
+        return view('quotations.edit', compact(
+            'quotation',
+            'purchaseRequest',
+            'quotationItems',
+            'vendors'
+        ));
+    }
 
     /**
      * Update quotation.
@@ -199,6 +200,91 @@ public function edit(Quotation $quotation)
         return redirect()
             ->route('quotations.index')
             ->with('success', 'Quotation updated successfully.');
+    }
+
+    /**
+     * Accept Quotation
+     */
+
+    public function accept(Quotation $quotation)
+    {
+        // Already accepted
+        if ($quotation->status === 'accepted') {
+            return back()->with(
+                'error',
+                'This quotation has already been accepted.'
+            );
+        }
+
+        // Check if purchase order already exists
+        if ($quotation->purchaseOrder()->exists()) {
+            return back()->with(
+                'error',
+                'A purchase order has already been created for this quotation.'
+            );
+        }
+
+        // Load quotation items and purchase request
+        $quotation->load([
+            'items',
+            'purchaseRequest',
+        ]);
+
+        // Quotation must have items
+        if ($quotation->items->isEmpty()) {
+            return back()->with(
+                'error',
+                'Cannot accept a quotation without items.'
+            );
+        }
+
+        DB::transaction(function () use ($quotation) {
+
+            // Create Purchase Order
+            $order = PurchaseOrder::create([
+                'order_number' => 'PO-' . str_pad(
+                    (PurchaseOrder::max('id') ?? 0) + 1,
+                    5,
+                    '0',
+                    STR_PAD_LEFT
+                ),
+
+                'quotation_id' => $quotation->id,
+                'vendor_id' => $quotation->vendor_id,
+                'status' => 'placed',
+                'order_date' => now()->toDateString(),
+                'notes' => $quotation->notes,
+            ]);
+
+            // Copy quotation items to purchase order
+            foreach ($quotation->items as $item) {
+
+                $order->items()->create([
+                    'raw_material_id' => $item->raw_material_id,
+                    'qty' => $item->qty,
+                    'unit_id' => $item->unit_id,
+                    'price' => $item->price,
+                    'total' => $item->total,
+                ]);
+            }
+
+            // Accept quotation
+            $quotation->update([
+                'status' => 'accepted',
+            ]);
+
+            // Complete purchase request
+            $quotation->purchaseRequest->update([
+                'status' => 'completed',
+            ]);
+        });
+
+        return redirect()
+            ->route('quotations.show', $quotation)
+            ->with(
+                'success',
+                'Quotation accepted and Purchase Order created successfully.'
+            );
     }
 
     /**

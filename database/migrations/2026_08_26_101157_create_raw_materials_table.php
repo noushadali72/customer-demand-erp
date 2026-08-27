@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('sku')->nullable();
             $table->decimal('cost_price');
-            $table->integer('stock');
+            $table->decimal('stock', 12, 3)->default(0);
             $table->foreignId('unit_id')->constrained('units')->noActionOnDelete();
             $table->integer('minimum_stock')->default(5);
             $table->text('description')->nullable();

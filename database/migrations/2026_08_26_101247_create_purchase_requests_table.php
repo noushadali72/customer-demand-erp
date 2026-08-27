@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('purchase_requests', function (Blueprint $table) {
             $table->id();
             $table->integer('request_number');
-            $table->enum('status',['complete','pending','active'])->default('active');
+            $table->enum('status',['completed','pending','active'])->default('active');
             $table->text('notes')->nullable();
             $table->timestamps();
         });

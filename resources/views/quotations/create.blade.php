@@ -103,6 +103,66 @@
                 </div>
             @endif
 
+                <div class="overflow-hidden rounded-lg border border-gray-200">
+
+                <div class="border-b bg-gray-50 px-4 py-3">
+                    <h4 class="text-sm font-semibold text-gray-800">
+                        Requested Materials
+                    </h4>
+                </div>
+
+                <div class="overflow-x-auto">
+
+                    <table class="w-full text-left text-sm">
+
+                        <thead class="border-b bg-white">
+                            <tr class="text-xs uppercase tracking-wide text-gray-500">
+                                <th class="px-4 py-3 font-medium">#</th>
+                                <th class="px-4 py-3 font-medium">Raw Material</th>
+                                <th class="px-4 py-3 font-medium">SKU</th>
+                                <th class="px-4 py-3 text-right font-medium">Quantity</th>
+                                <th class="px-4 py-3 font-medium">Unit</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="divide-y divide-gray-100">
+
+                             @foreach($purchaseRequest->items as $index=>$item)
+
+                                <tr class="hover:bg-gray-50">
+
+                                    <td class="px-4 py-3 text-gray-500">
+                                        {{ $index + 1 }}
+                                    </td>
+
+                                    <td class="px-4 py-3 font-medium text-gray-900">
+                                        {{ $item->rawMaterial->name }}
+                                    </td>
+
+                                    <td class="px-4 py-3 text-gray-500">
+                                        {{ $item->rawMaterial->sku }}
+                                    </td>
+
+                                    <td class="px-4 py-3 text-right font-medium text-gray-900">
+                                        {{ $item->qty }}
+                                    </td>
+
+                                    <td class="px-4 py-3 text-gray-600">
+                                        {{ $item->unit->short_name ?? $item->unit->name }}
+                                    </td>
+
+                                </tr>
+
+                            @endforeach
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
 
         </div>
     </div>
@@ -255,6 +315,8 @@
                         <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+
+                
 
             </div>
 

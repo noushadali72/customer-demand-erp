@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ManufacturingFormulaController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\PurchaseRequestController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RawMaterialController;
@@ -37,6 +38,19 @@ Route::middleware(['auth','role:admin'])->group(function(){
 
         Route::resource('quotations',QuotationController::class)->except('create');
         Route::get('quotations/create/{purchaseRequest}',[QuotationController::class,'create'])->name('quotations.create');
+        Route::post('quotations/{quotation}/accept', [QuotationController::class, 'accept'])->name('quotations.accept');
+
+        Route::resource('purchase-orders', PurchaseOrderController::class)->only(['index', 'show', 'destroy']);
+
+        Route::post(
+            'purchase-orders/{purchaseOrder}/receive',
+            [PurchaseOrderController::class, 'receive']
+        )->name('purchase-orders.receive');
+
+        Route::delete(
+            'order-attachments/{attachment}',
+            [PurchaseOrderController::class, 'destroyAttachment']
+        )->name('order-attachments.destroy');
 
         Route::post('logout',[AuthController::class,'logout'])->name('logout');
 });

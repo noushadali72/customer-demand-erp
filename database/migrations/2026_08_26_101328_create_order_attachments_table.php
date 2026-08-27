@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('order_attachments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_order_id')->constrained()->noActionOnDelete();
+            $table->foreignId('purchase_order_id')->constrained()->cascadeOnDelete();
             $table->string('file_path');
             $table->timestamps();
         });

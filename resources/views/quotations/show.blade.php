@@ -14,11 +14,43 @@
             </h2>
         </div>
 
+        <div class="flex items-center gap-3">
+
+    @if($quotation->status === 'pending')
+
         <a href="{{ route('quotations.edit', $quotation) }}"
-            class="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800">
+            class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
             <i class="bx bx-edit"></i>
             Edit
         </a>
+
+        <form action="{{ route('quotations.accept', $quotation) }}"
+            method="POST"
+            id="accept-quotation-form">
+
+            @csrf
+
+            <button type="button"
+                id="accept-quotation"
+                class="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-green-700">
+
+                <i class="bx bx-check-circle"></i>
+                Accept Quotation
+
+            </button>
+
+        </form>
+
+    @else
+
+        <span class="inline-flex items-center gap-2 rounded-lg bg-green-100 px-4 py-2.5 text-sm font-medium text-green-700">
+            <i class="bx bx-check-circle"></i>
+            Accepted
+        </span>
+
+    @endif
+
+</div>
 
     </div>
 
@@ -223,5 +255,25 @@
         </div>
 
     </div>
+
+    @push('scripts')
+<script>
+    $(document).ready(function () {
+
+        $('#accept-quotation').on('click', function () {
+
+            const confirmed = confirm(
+                'Are you sure you want to accept this quotation?\n\nA Purchase Order will be created for this quotation.'
+            );
+
+            if (confirmed) {
+                $('#accept-quotation-form').submit();
+            }
+
+        });
+
+    });
+</script>
+@endpush
 
 </x-layouts.app>

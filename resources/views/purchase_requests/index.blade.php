@@ -107,23 +107,23 @@
 
                             <td class="px-6 py-4">
 
-                                @if($purchaseRequest->status === 'complete')
+                                @if($purchaseRequest->status === 'completed')
 
                                     <span class="rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
-                                        Complete
+                                        Completed
                                     </span>
 
-                                @elseif($purchaseRequest->status === 'pending')
+                                @elseif($purchaseRequest->status === 'active')
 
-                                    <span class="rounded-full bg-yellow-100 px-2.5 py-1 text-xs font-medium text-yellow-700">
-                                        Pending
-                                    </span>
-
+                                <span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700">
+                                    Active
+                                </span>
+                                
                                 @else
-
-                                    <span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700">
-                                        Active
-                                    </span>
+                                
+                                <span class="rounded-full bg-yellow-100 px-2.5 py-1 text-xs font-medium text-yellow-700">
+                                    pending
+                                </span>
 
                                 @endif
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('order_number');
             $table->foreignId('quotation_id')->constrained('quotations')->noActionOnDelete();
             $table->foreignId('vendor_id')->constrained('vendors')->noActionOnDelete();
-            $table->enum('status',['completed','pending']);
+            $table->enum('status',['received','placed']);
             $table->date('order_date');
             $table->date('received_date')->nullable();
             $table->text('notes')->nullable();

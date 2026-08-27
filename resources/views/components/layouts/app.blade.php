@@ -103,14 +103,14 @@
                 </a>
 
                 {{-- Purchase Orders --}}
-                {{-- <a href="#"
+                <a href="{{ route('purchase-orders.index') }}"
                     class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
                     {{ request()->routeIs('purchase-orders.*')
                         ? 'bg-gray-800 text-white'
                         : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="bx bx-cart text-xl"></i>
                     <span>Purchase Orders</span>
-                </a> --}}
+                </a>
 
                 {{-- Invoices --}}
                 {{-- <a href="{{ route('invoices.index') }}"
