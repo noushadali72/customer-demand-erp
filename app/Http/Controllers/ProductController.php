@@ -33,6 +33,10 @@ class ProductController extends Controller
             ->with('success', 'Product created successfully.');
     }
 
+    public function manufacture(){
+        
+    }
+
     public function show(Product $product)
     {
         return response()->json([
@@ -76,4 +80,6 @@ class ProductController extends Controller
             ->route('products.index')
             ->with('success', 'Product deleted successfully.');
     }
+
+
 }
